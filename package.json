@@ -1,0 +1,19 @@
+{
+    "name": "simple-store",
+    "version": "0.4.0",
+    "description": "Wrapper for IndexedDB",
+    "scripts": {
+        "test": "mocha test"
+    },
+    "keywords": [
+        "indexedDB"
+    ],
+    "author": "icw82",
+    "license": "MIT",
+    "dependencies": {
+        "del": "^4.1.1",
+        "esm": "^3.2.25",
+        "gulp": "^4.0.2",
+        "mocha": "^6.1.4"
+    }
+}
