@@ -1,27 +1,49 @@
 
-import { series } from 'gulp';
+import { series, parallel } from 'gulp';
 
 import {
     clear,
+
     immutable,
+    immutableWatch,
+
     build,
-    // watch,
+    buildWatch,
+
+    scripts,
+    scriptsWatch,
+
 } from './tasks/'
+
+
+const watch = parallel(
+    immutableWatch,
+    buildWatch,
+)
 
 const defaultTask = series(
     clear,
     immutable,
     build,
-    // watch, // gulp.parallel(...tasks)
+    watch,
 )
+
 
 export {
     defaultTask as default,
 
     clear,
+
     immutable,
+    immutableWatch,
+
     build,
-    // watch,
+    buildWatch,
+
+    scripts,
+    scriptsWatch,
+
+    watch,
 }
 
 // import { readdirSync, existsSync, statSync } from 'fs';

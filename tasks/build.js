@@ -1,27 +1,24 @@
-import { parallel, src, dest, watch } from 'gulp';
+import { parallel } from 'gulp';
+import { scripts, scriptsWatch } from './scripts.js';
+import { thirdParty, thirdPartyWatch } from './third-party.js';
+// import { styles, stylesWatch } from './styles.js';
 
-// 'third-party',
-// 'scripts',
-// 'styles'
 
-const ext = `.js`;
-const glob = [
-    `sources/**/*${ ext }`,
-    `!sources/**/*.test${ ext }`,
-];
+const build = parallel(
+    thirdParty,
+    scripts,
+    // styles
+);
 
-const build = () => src(glob)
-    .pipe(dest('build/'));
+const buildWatch = parallel(
+    thirdPartyWatch,
+    scriptsWatch,
+    // stylesWatch,
+);
 
-// 'add', 'addDir', 'change', 'unlink', 'unlinkDir', 'ready', 'error', 'all'
-
-const buildWatch = (cb) => {
-    const watcher = watch(glob);//
-    watcher.on('change', parallel(build));
-    cb();
-};
 
 export {
     build,
     buildWatch,
+    // stylesWatch,
 }

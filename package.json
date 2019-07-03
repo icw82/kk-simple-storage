@@ -1,9 +1,9 @@
 {
     "name": "simple-store",
     "version": "0.4.0",
-    "description": "Wrapper for IndexedDB",
+    "description": "Wrapper for IndexedDB with simple fallback",
     "scripts": {
-        "test": "mocha test"
+        "test": "test"
     },
     "keywords": [
         "indexedDB"
@@ -14,6 +14,8 @@
         "del": "^4.1.1",
         "esm": "^3.2.25",
         "gulp": "^4.0.2",
-        "mocha": "^6.1.4"
+        "gulp-typescript": "^5.0.1",
+        "requirejs": "^2.3.6",
+        "typescript": "^3.5.2"
     }
 }

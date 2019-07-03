@@ -1,11 +1,23 @@
 export {
     clear,
-} from './clear.js'
+} from './clear.js';
 
 export {
     immutable,
-} from './immutable.js'
+    immutableWatch,
+} from './immutable.js';
 
 export {
     build,
-} from './build.js'
+    buildWatch,
+} from './build.js';
+
+export {
+    scripts,
+    scriptsWatch,
+} from './scripts.js';
+
+export {
+    thirdParty,
+    thirdPartyWatch,
+} from './third-party.js';
