@@ -2,7 +2,7 @@ import { parallel, src, dest, watch } from 'gulp';
 import ts from 'gulp-typescript';
 
 
-const ext = `.ts`;
+const ext = '.ts';
 const glob = [
     `sources/**/*${ ext }`,
     `!sources/**/*.test${ ext }`,
@@ -10,8 +10,9 @@ const glob = [
 
 const scripts = () => src(glob)
     .pipe(ts({
-        target: `es5`,
-        module: `amd`,
+        target: 'es5',
+        // strict: true,
+        // module: 'amd',
     }))
     .pipe(dest('build/scripts/'));
 
@@ -26,4 +27,4 @@ const scriptsWatch = cb => {
 export {
     scripts,
     scriptsWatch,
-}
+};
