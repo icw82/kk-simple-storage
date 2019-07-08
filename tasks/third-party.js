@@ -2,7 +2,10 @@ import { parallel, src, dest, watch } from 'gulp';
 
 
 const glob = [
-    `requirejs/require.js`,
+    'requirejs/require.js',
+    'mocha/mocha.js',
+    'mocha/mocha.css',
+    'chai/chai.js',
 ].map(item => './node_modules/' + item);;
 
 const thirdParty = () => src(glob)
@@ -18,4 +21,4 @@ const thirdPartyWatch = cb => {
 export {
     thirdParty,
     thirdPartyWatch,
-}
+};

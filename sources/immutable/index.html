@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>TEST</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="third-party/mocha.css" />
+</head>
+<body>
+    <div id="mocha"></div>
+
+    <script src="third-party/chai.js"></script>
+    <script src="third-party/mocha.js"></script>
+
+    <script src="scripts/utils.js"></script>
+
+    <script src='scripts/SimpleStore.js'></script>
+    <script src='scripts/SimpleStoreLS.js'></script>
+
+    <script class="mocha-init">
+        mocha.setup('bdd');
+        mocha.checkLeaks();
+    </script>
+
+    <script src='scripts/SimpleStore.test.js'></script>
+
+    <script class="mocha-exec">
+        mocha.run();
+    </script>
+</body>
+</html>
