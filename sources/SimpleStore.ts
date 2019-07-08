@@ -121,9 +121,9 @@ class SimpleStore {
     protected dbVersion: number;
 
     constructor(
-        protected database: string,
-        protected store: string,
-        protected key: string = 'id',
+        public readonly database: string,
+        public readonly store: string,
+        public readonly key: string = 'id',
     ) {
         this.database = database;
         this.store = store;

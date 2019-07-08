@@ -10,34 +10,15 @@
  */
 class SimpleStoreLS extends SimpleStore {
 
-    /**
-     * Чтение.
-     * @param {Number|any} key
-     * @returns {Promise}
-     */
-    public get(key: number | any): Promise<any> {
-        return new Promise((resolve, reject) => {
-            // this.getStore().then(store => {
+    public readonly storeNameLS: string;
 
-            //     const request = store.get(key);
-
-            //     const resultPromise = new Promise<IDBRequest>((rs, rj) => {
-            //         request.onsuccess = () => rs(request.result);
-            //         request.onerror = () => rj(request.error);
-            //     });
-
-            //     resultPromise.then(result => {
-            //         request.transaction.db.close();
-
-            //         if (result instanceof Array && result.length < 2) {
-            //             resolve(result[0]);
-            //             return;
-            //         }
-
-            //         resolve(result);
-            //     }, reject);
-            // }, reject);
-        });
+    constructor(
+        database: string,
+        store: string,
+        key: string = 'id',
+    ) {
+        super(database, store, key);
+        this.storeNameLS = `${ this.database }/${ this.store }/v${ this.version }`;
     }
 
     /**
@@ -46,50 +27,84 @@ class SimpleStoreLS extends SimpleStore {
      * @returns {Promise<void>}
      */
     public set(object: any): Promise<void> {
-        if (!object.hasOwnProperty(this.key)) {
-            throw new TypeError();
-        }
-
         return new Promise((resolve, reject) => {
-            // this.getStore(true).then(store => {
-            //     const request = store.put(object);
+            if (!object.hasOwnProperty(this.key)) {
+                reject(new TypeError());
+                return;
+            }
 
-            //     const resultPromise = new Promise<void>((rs, rj) => {
-            //         request.onsuccess = () => rs(true);
-            //         request.onerror = () => rj(request.error);
-            //     });
+            const store = this.getStoreLS();
 
-            //     resultPromise.then(result => {
-            //         request.transaction.db.close();
-            //         resolve(result);
-            //     }, reject);
+            const key = object[this.key];
+            const existingItem = store.find(item => item[this.key] === key);
 
-            // }, reject);
+            if (existingItem) {
+                const index = store.indexOf(existingItem);
+                store[index] = object;
+            } else {
+                store.push(object);
+            }
+
+            localStorage.setItem(this.storeNameLS, JSON.stringify(store));
+
+            resolve();
+        });
+    }
+
+    /**
+     * Чтение.
+     * @param {keyValue} key
+     * @returns {Promise<object>}
+     */
+    public get(key: keyValue): Promise<object> {
+        return new Promise((resolve, reject) => {
+            const store = this.getStoreLS();
+            const existingItem = store.find(item => item[this.key] === key);
+
+            if (existingItem) {
+                resolve(existingItem);
+            } else {
+                resolve();
+            }
+        });
+    }
+
+    /**
+     * Подсчёт элементов.
+     * @returns {Promise<number>}
+     */
+    public count(): Promise<number> {
+        return new Promise((resolve, reject) => {
+            resolve(this.getStoreLS().length);
         });
     }
 
     /**
      * Удаление.
-     * @param {Number|any} key
+     * @param {keyValue | filterFunction} key
      * @returns {Promise<void>}
      */
-    public delete(key: number | any): Promise<void> {
-        // TODO: массовое удаление по фильтру
+    public delete(key: keyValue | filterFunction): Promise<void> {
         return new Promise((resolve, reject) => {
-            // this.getStore(true).then(store => {
-            //     const request = store.delete(key);
+            const store = this.getStoreLS();
 
-            //     const resultPromise = new Promise<void>((rs, rj) => {
-            //         request.onsuccess = () => rs(true);
-            //         request.onerror = () => rj(request.error);
-            //     });
+            if (key instanceof Function) {
+                const filterFunction = key;
+                const filteredStore = store.filter(item => !filterFunction(item));
+                localStorage.setItem(this.storeNameLS, JSON.stringify(filteredStore));
+                resolve();
+                return;
+            }
 
-            //     resultPromise.then(result => {
-            //         request.transaction.db.close();
-            //         resolve(result);
-            //     }, reject);
+            const existingItem = store.find(item => item[this.key] === key);
 
-            // });
+            if (existingItem) {
+                const index = store.indexOf(existingItem);
+                store.splice(index, 1);
+                localStorage.setItem(this.storeNameLS, JSON.stringify(store));
+                resolve();
+                return;
+            }
         });
     }
 
@@ -99,20 +114,23 @@ class SimpleStoreLS extends SimpleStore {
      */
     public clear(): Promise<void> {
         return new Promise((resolve, reject) => {
-            // this.getStore(true).then(store => {
-            //     const request = store.clear();
-
-            //     const resultPromise = new Promise<boolean>((rs, rj) => {
-            //         request.onsuccess = () => resolve(true);
-            //         request.onerror = () => reject(request.error);
-            //     });
-
-            //     resultPromise.then(result => {
-            //         request.transaction.db.close();
-            //         resolve(result);
-            //     }, reject);
-
-            // });
+            localStorage.setItem(this.storeNameLS, '[]');
+            resolve();
         });
+    }
+
+    /**
+     * @returns {any[]}
+     * @private
+     */
+    private getStoreLS(): any[] {
+        const store = localStorage.getItem(this.storeNameLS);
+
+        if (store === null) {
+            localStorage.setItem(this.storeNameLS, '[]');
+            return [];
+        }
+
+        return JSON.parse(store);
     }
 }

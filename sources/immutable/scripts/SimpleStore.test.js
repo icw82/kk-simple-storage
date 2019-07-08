@@ -116,9 +116,11 @@ runs.forEach(SimpleStore => {
                     {id: '2005-01-04'}, // 4
                 ];
 
+                const filterFunction = item => item.id[3] < 5;
+
                 await cache.clear();
                 await Promise.all(items.map(item => cache.set(item)));
-                await cache.delete(item => item.id[3] < 5);
+                await cache.delete(filterFunction);
 
                 const result = await cache.count();
                 chai.expect(result).to.equal(4);

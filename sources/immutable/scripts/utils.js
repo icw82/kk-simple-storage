@@ -39,7 +39,7 @@ const rand = (first, second) => {
 };
 
 const getRandObject = () => ({
-    id: rand() ? rand(5) : rand(5).toString(),
+    id: rand() ? rand(10) : rand(10).toString(),
     name: rand([
         'Авдотья', 'Агафия', 'Иоанна', 'Лукия', 'Макария', 'Миропия',
         'Патрикия', 'Агап', 'Анастасий', 'Викентий', 'Герасим', 'Евдоким',

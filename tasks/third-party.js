@@ -2,7 +2,7 @@ import { parallel, src, dest, watch } from 'gulp';
 
 
 const glob = [
-    'requirejs/require.js',
+    // 'requirejs/require.js',
     'mocha/mocha.js',
     'mocha/mocha.css',
     'chai/chai.js',
