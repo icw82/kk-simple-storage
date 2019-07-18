@@ -1,6 +1,13 @@
+import {
+    default as ISimpleStore,
+    filterFunction,
+    keyValue,
+} from './ISimpleStore';
+
+
 /**
  * Класс-обёртка над IndexedDB, упрощающая работу с ней. Без индексов.
- * @class EOREQ/Utils/SimpleStore
+ * @class SimpleStore
  *
  * @param {String} database Имя базы данных. Если база с таким именем не найдена, будет создана новая.
  * @param {String} store Имя хранилища
@@ -25,7 +32,7 @@
  *
  * @author icw82
  */
-class SimpleStore {
+class SimpleStore implements ISimpleStore {
 
     /**
      * @returns {number}
@@ -56,11 +63,12 @@ class SimpleStore {
     ): Promise<void> {
         return new Promise((resolve, reject) => {
             const request = store.delete(key);
+            const db = store.transaction.db;
 
             request.onerror = () => reject(request.error);
             request.onsuccess = () => {
                 if (closeDatabaseAfter) {
-                    request.transaction.db.close();
+                    db.close();
                 }
 
                 resolve();
@@ -68,13 +76,14 @@ class SimpleStore {
         });
     }
 
-    public static deleteItemsFromStoreByFilter(
+    public static deleteItemsFromStoreByFilter<T>(
         store: IDBObjectStore,
-        filter: filterFunction,
+        filter: (value: T) => any,
         closeDatabaseAfter: boolean = false,
     ): Promise<void> {
         return new Promise((resolve, reject) => {
             const request = store.openCursor();
+            const db = store.transaction.db;
             let continueCursor = true;
 
             request.onerror = () => reject(request.error);
@@ -83,7 +92,7 @@ class SimpleStore {
 
                 if (!cursor) {
                     if (closeDatabaseAfter) {
-                        request.transaction.db.close();
+                        db.close();
                     }
 
                     resolve();
@@ -145,6 +154,7 @@ class SimpleStore {
 
             this.getStore(true).then(store => {
                 const request = store.put(object);
+                const db = store.transaction.db;
 
                 const resultPromise = new Promise<void>((rs, rj) => {
                     request.onsuccess = () => rs();
@@ -152,7 +162,7 @@ class SimpleStore {
                 });
 
                 resultPromise.then(() => {
-                    request.transaction.db.close();
+                    db.close();
                     resolve();
                 }, reject);
 
@@ -169,6 +179,7 @@ class SimpleStore {
         return new Promise((resolve, reject) => {
             this.getStore().then(store => {
                 const request = store.get(key);
+                const db = store.transaction.db;
 
                 const resultPromise = new Promise<IDBRequest>((rs, rj) => {
                     request.onsuccess = () => rs(request.result);
@@ -176,7 +187,7 @@ class SimpleStore {
                 });
 
                 resultPromise.then(result => {
-                    request.transaction.db.close();
+                    db.close();
                     resolve(result);
                 }, reject);
             }, reject);
@@ -191,6 +202,7 @@ class SimpleStore {
         return new Promise((resolve, reject) => {
             this.getStore().then(store => {
                 const request = store.count();
+                const db = store.transaction.db;
 
                 const resultPromise = new Promise<number>((rs, rj) => {
                     request.onsuccess = () => rs(request.result);
@@ -198,7 +210,7 @@ class SimpleStore {
                 });
 
                 resultPromise.then(result => {
-                    request.transaction.db.close();
+                    db.close();
                     resolve(result);
                 }, reject);
             }, reject);
@@ -241,14 +253,15 @@ class SimpleStore {
         return new Promise((resolve, reject) => {
             this.getStore(true).then(store => {
                 const request = store.clear();
+                const db = store.transaction.db;
 
                 const resultPromise = new Promise<void>((rs, rj) => {
                     request.onsuccess = () => rs();
                     request.onerror = () => rj(request.error);
                 });
 
-                resultPromise.then(result => {
-                    request.transaction.db.close();
+                resultPromise.then(() => {
+                    db.close();
                     resolve();
                 }, reject);
 
@@ -270,7 +283,7 @@ class SimpleStore {
                 indexedDB.open(self.database, self.version) :
                 indexedDB.open(self.database);
 
-            open.onupgradeneeded = event => {
+            open.onupgradeneeded = () => {
                 const db = open.result;
 
                 // Удаление старого хранилища.
@@ -317,15 +330,5 @@ class SimpleStore {
     }
 }
 
-/**
- * A number, or a string containing a number.
- * @typedef { number | string } keyValue
- */
-type keyValue = number | string;
 
-/**
- * @callback filterFunction
- * @param {keyValue} item
- * @returns {boolean}
- */
-type filterFunction = (item: keyValue) => boolean;
+export default SimpleStore;

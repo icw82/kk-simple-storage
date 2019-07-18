@@ -5,28 +5,46 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>TEST</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel="stylesheet" href="third-party/mocha.css" />
-</head>
-<body>
-    <div id="mocha"></div>
+    <link rel="stylesheet" href="/third-party/mocha.css" />
 
-    <script src="third-party/chai.js"></script>
-    <script src="third-party/mocha.js"></script>
+    <script src="/third-party/mocha.js"></script>
+    <script src="/third-party/require.js"></script>
 
-    <script src="scripts/utils.js"></script>
-
-    <script src='scripts/SimpleStore.js'></script>
-    <script src='scripts/SimpleStoreLS.js'></script>
-
-    <script class="mocha-init">
+    <script>
         mocha.setup('bdd');
         mocha.checkLeaks();
     </script>
 
-    <script src='scripts/SimpleStore.test.js'></script>
+    <script>
+        require.config({
+            baseUrl: '.',
+            nodeRequire: require,
+            paths: {
+                'chai': '/third-party/chai',
+                'tslib': '/third-party/tslib',
+                'utils': '/scripts/utils',
 
-    <script class="mocha-exec">
-        mocha.run();
+                'SimpleStore': '/scripts/SimpleStore',
+                'SimpleStoreLS': '/scripts/SimpleStoreLS',
+
+                'test': 'scripts/SimpleStore.test',
+            },
+        });
+
+        require([
+            'chai',
+            'tslib',
+            'test',
+        ], (
+            chai,
+            test,
+        ) => {
+            mocha.run();
+        } );
+
     </script>
+</head>
+<body>
+    <div id="mocha"></div>
 </body>
 </html>

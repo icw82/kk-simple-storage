@@ -19,4 +19,4 @@ const immutableWatch = cb => {
 export {
     immutable,
     immutableWatch,
-}
+};

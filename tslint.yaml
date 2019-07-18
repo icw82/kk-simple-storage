@@ -6,13 +6,20 @@ rules:
     - true
     - spaces
     - 4
+
   quotemark:
     - true
     - single
+
   semi:
     - error
     - always
+
   arrow-parens:
     - true
     - ban-single-arg-parens
+
+  no-consecutive-blank-lines:
+    - true
+    - 2
 

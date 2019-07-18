@@ -1,6 +1,13 @@
+import {
+    filterFunction,
+    keyValue,
+} from './ISimpleStore';
+import SimpleStore from './SimpleStore';
+
+
 /**
- * Фоллбек (fallback) для {@link EOREQ/Utils/SimpleStore }
- * @class EOREQ/Utils/SimpleStoreLS
+ * Фоллбек (fallback) для {@link SimpleStore }
+ * @class SimpleStoreLS
  *
  * @param {String} database Имя базы данных. Если база с таким именем не найдена, будет создана новая.
  * @param {String} store Имя хранилища
@@ -8,6 +15,7 @@
  *
  * @author icw82
  */
+
 class SimpleStoreLS extends SimpleStore {
 
     public readonly storeNameLS: string;
@@ -18,7 +26,7 @@ class SimpleStoreLS extends SimpleStore {
         key: string = 'id',
     ) {
         super(database, store, key);
-        this.storeNameLS = `${ this.database }/${ this.store }/v${ this.version }`;
+        this.storeNameLS = `${ this.database }_${ this.store }_v${ this.version }`;
     }
 
     /**
@@ -57,7 +65,7 @@ class SimpleStoreLS extends SimpleStore {
      * @returns {Promise<object>}
      */
     public get(key: keyValue): Promise<object> {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             const store = this.getStoreLS();
             const existingItem = store.find(item => item[this.key] === key);
 
@@ -74,7 +82,7 @@ class SimpleStoreLS extends SimpleStore {
      * @returns {Promise<number>}
      */
     public count(): Promise<number> {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             resolve(this.getStoreLS().length);
         });
     }
@@ -85,7 +93,7 @@ class SimpleStoreLS extends SimpleStore {
      * @returns {Promise<void>}
      */
     public delete(key: keyValue | filterFunction): Promise<void> {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             const store = this.getStoreLS();
 
             if (key instanceof Function) {
@@ -113,7 +121,7 @@ class SimpleStoreLS extends SimpleStore {
      * @returns {Promise<void>}
      */
     public clear(): Promise<void> {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             localStorage.setItem(this.storeNameLS, '[]');
             resolve();
         });
@@ -134,3 +142,5 @@ class SimpleStoreLS extends SimpleStore {
         return JSON.parse(store);
     }
 }
+
+export default SimpleStoreLS;

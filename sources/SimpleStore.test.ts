@@ -1,5 +1,16 @@
+import * as chai from 'chai';
+import SimpleStoreOriginal from './SimpleStore';
+import SimpleStoreLS from './SimpleStoreLS';
+// import  ISimpleStore from './ISimpleStore';
+
+import {
+    getRandObject,
+    rand,
+} from './utils';
+
+
 const runs = [
-    SimpleStore,
+    SimpleStoreOriginal,
     SimpleStoreLS,
 ];
 
@@ -40,11 +51,11 @@ runs.forEach(SimpleStore => {
         describe('Adding items', () => {
 
             it('Should add object with the key', async () => {
-                let result;
+                let result: any;
 
                 try {
                     result = await Promise.all(
-                        objects.map(item => cache.set(item))
+                        objects.map(item => cache.set(item)),
                     );
                     result = true;
                 } catch (error) {
@@ -78,7 +89,7 @@ runs.forEach(SimpleStore => {
 
             it('Should get object by key', async () => {
                 const reference = rand(objects);
-                const result = await cache.get(reference.id);
+                const result: any = await cache.get(reference.id);
 
                 chai.expect(result.id).to.equal(reference.id);
                 chai.expect(result.name).to.equal(reference.name);
@@ -91,7 +102,7 @@ runs.forEach(SimpleStore => {
             it('Should delete record by key', async () => {
                 const reference = rand(objects);
 
-                let result;
+                let result: any;
 
                 try {
                     result = await cache.delete(reference.id);
@@ -116,7 +127,7 @@ runs.forEach(SimpleStore => {
                     {id: '2005-01-04'}, // 4
                 ];
 
-                const filterFunction = item => item.id[3] < 5;
+                const filterFunction = (item: any) => item.id[3] < 5;
 
                 await cache.clear();
                 await Promise.all(items.map(item => cache.set(item)));
