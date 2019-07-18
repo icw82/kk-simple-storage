@@ -1,8 +1,8 @@
 import {
-    // default as ISimpleStore,
+    // default as ISimpleStorage,
     // filterFunction,
     keyValue,
-} from './ISimpleStore';
+} from './ISimpleStorage';
 
 /**
  * A number, or a string containing a number.
@@ -55,13 +55,13 @@ const rand = (first?: randFirstValue, second?: number): any => {
 
 };
 
-interface ISimpleStoreTestObject {
+interface ISimpleStorageTestObject {
     id: keyValue;
     name: string;
     url: string;
 }
 
-const getRandObject = (): ISimpleStoreTestObject => ({
+const getRandObject = (): ISimpleStorageTestObject => ({
     id: rand() ? rand(10) : rand(10).toString(),
     name: rand([
         'Авдотья', 'Агафия', 'Иоанна', 'Лукия', 'Макария', 'Миропия',
@@ -82,7 +82,7 @@ const sleep = async (ms: number): Promise<any> => await new Promise(r => setTime
 
 export {
     rand,
-    ISimpleStoreTestObject,
+    ISimpleStorageTestObject,
     getRandObject,
     sleep,
 };

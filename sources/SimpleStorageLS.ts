@@ -1,13 +1,13 @@
 import {
     filterFunction,
     keyValue,
-} from './ISimpleStore';
-import SimpleStore from './SimpleStore';
+} from './ISimpleStorage';
+import SimpleStorage from './SimpleStorage';
 
 
 /**
- * Фоллбек (fallback) для {@link SimpleStore }
- * @class SimpleStoreLS
+ * Фоллбек (fallback) для {@link SimpleStorage }
+ * @class SimpleStorageLS
  *
  * @param {String} database Имя базы данных. Если база с таким именем не найдена, будет создана новая.
  * @param {String} store Имя хранилища
@@ -16,7 +16,7 @@ import SimpleStore from './SimpleStore';
  * @author icw82
  */
 
-class SimpleStoreLS extends SimpleStore {
+class SimpleStorageLS extends SimpleStorage {
 
     public readonly storeNameLS: string;
 
@@ -143,4 +143,4 @@ class SimpleStoreLS extends SimpleStore {
     }
 }
 
-export default SimpleStoreLS;
+export default SimpleStorageLS;

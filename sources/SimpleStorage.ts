@@ -1,13 +1,13 @@
 import {
-    default as ISimpleStore,
+    default as ISimpleStorage,
     filterFunction,
     keyValue,
-} from './ISimpleStore';
+} from './ISimpleStorage';
 
 
 /**
  * Класс-обёртка над IndexedDB, упрощающая работу с ней. Без индексов.
- * @class SimpleStore
+ * @class SimpleStorage
  *
  * @param {String} database Имя базы данных. Если база с таким именем не найдена, будет создана новая.
  * @param {String} store Имя хранилища
@@ -16,7 +16,7 @@ import {
  * @example
  * <caption>Инициализация хранилища</caption>
  * <pre>
- *    const cache = new SimpleStore('MyCache', 'Users', 'id');
+ *    const cache = new SimpleStorage('MyCache', 'Users', 'id');
  * </pre>
  *
  * <caption>Создание или обновление записи</caption>
@@ -32,7 +32,7 @@ import {
  *
  * @author icw82
  */
-class SimpleStore implements ISimpleStore {
+class SimpleStorage implements ISimpleStorage {
 
     /**
      * @returns {number}
@@ -100,7 +100,7 @@ class SimpleStore implements ISimpleStore {
                 }
 
                 if (filter(cursor.value)) {
-                    SimpleStore.deleteCursor(cursor).catch(
+                    SimpleStorage.deleteCursor(cursor).catch(
                         (...args) => {
                             continueCursor = false;
                             reject(...args);
@@ -229,13 +229,13 @@ class SimpleStore implements ISimpleStore {
                 if (key instanceof Function) {
                     const filter = key;
 
-                    SimpleStore
+                    SimpleStorage
                         .deleteItemsFromStoreByFilter(store, filter, false)
                         .then(resolve, reject);
 
                 } else {
 
-                    SimpleStore
+                    SimpleStorage
                         .deleteItemFromStoreByKey(store, key, false)
                         .then(resolve, reject);
 
@@ -331,4 +331,4 @@ class SimpleStore implements ISimpleStore {
 }
 
 
-export default SimpleStore;
+export default SimpleStorage;

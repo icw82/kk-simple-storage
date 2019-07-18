@@ -1,5 +1,5 @@
 /**
- * Key value type of SimpleStore item object.
+ * Key value type of SimpleStorage item object.
  * @typedef { number | string } keyValue
  */
 type keyValue = number | string;
@@ -11,7 +11,7 @@ type keyValue = number | string;
  */
 type filterFunction = (item: object) => boolean;
 
-interface ISimpleStore {
+interface ISimpleStorage {
     readonly database: string;
     readonly store: string;
     readonly key: string;
@@ -26,7 +26,7 @@ interface ISimpleStore {
 
 
 export {
-    ISimpleStore as default,
+    ISimpleStorage as default,
     filterFunction,
     keyValue,
 };

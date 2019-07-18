@@ -1,7 +1,7 @@
 import * as chai from 'chai';
-import SimpleStoreOriginal from './SimpleStore';
-import SimpleStoreLS from './SimpleStoreLS';
-// import  ISimpleStore from './ISimpleStore';
+import SimpleStorageOriginal from './SimpleStorage';
+import SimpleStorageLS from './SimpleStorageLS';
+// import  ISimpleStorage from './ISimpleStorage';
 
 import {
     getRandObject,
@@ -10,19 +10,19 @@ import {
 
 
 const runs = [
-    SimpleStoreOriginal,
-    SimpleStoreLS,
+    SimpleStorageOriginal,
+    SimpleStorageLS,
 ];
 
-runs.forEach(SimpleStore => {
+runs.forEach(SimpleStorage => {
 
-    const name = SimpleStore.name;
+    const name = SimpleStorage.name;
 
     const database = 'MyCache';
     const store = 'Users';
     const key = 'id';
 
-    const cache = new SimpleStore(database, store, key);
+    const cache = new SimpleStorage(database, store, key);
     const count = 5;
 
     // TODO: Проверка обновления базы
