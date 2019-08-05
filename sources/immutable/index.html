@@ -9,6 +9,7 @@
 
     <script src="/third-party/mocha.js"></script>
     <script src="/third-party/require.js"></script>
+    <script src="/scripts/polyfills.js"></script>
 
     <script>
         mocha.setup('bdd');
@@ -20,6 +21,7 @@
             baseUrl: '.',
             nodeRequire: require,
             paths: {
+                'promise': '/third-party/es6-promise.auto.min',
                 'chai': '/third-party/chai',
                 'tslib': '/third-party/tslib',
                 'utils': '/scripts/utils',
@@ -32,16 +34,18 @@
         });
 
         require([
+            'promise',
             'chai',
             'tslib',
             'test',
-        ], (
+        ], function(
+            promise,
             chai,
-            test,
-        ) => {
+            test
+        ) {
+            promise.polyfill();
             mocha.run();
         } );
-
     </script>
 </head>
 <body>

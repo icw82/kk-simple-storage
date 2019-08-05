@@ -6,6 +6,7 @@ const glob = [
     'tslib/tslib.js',
     'mocha/mocha.js',
     'mocha/mocha.css',
+    'es6-promise/dist/es6-promise.auto.min.js',
     'chai/chai.js',
 ].map(item => './node_modules/' + item);
 

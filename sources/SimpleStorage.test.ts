@@ -14,9 +14,26 @@ const runs = [
     SimpleStorageLS,
 ];
 
-runs.forEach(SimpleStorage => {
+const getFunctionName = (f: () => any): string => {
+    if (typeof f.name === 'string') {
+        return f.name;
+    } else {
+        // IE
+        const string = f.toString();
+        const match = string.match(/^function\s*([^\s(]+)/);
 
-    const name = SimpleStorage.name;
+        if (match) {
+            return match[1];
+        }
+
+        throw new Error('Function name is not found');
+
+    }
+};
+
+runs.forEach((SimpleStorage: any) => {
+
+    const name = getFunctionName(SimpleStorage);
 
     const database = 'MyCache';
     const store = 'Users';
@@ -59,6 +76,7 @@ runs.forEach(SimpleStorage => {
                     );
                     result = true;
                 } catch (error) {
+                    console.error(error);
                     result = false;
                 }
 
@@ -108,6 +126,7 @@ runs.forEach(SimpleStorage => {
                     result = await cache.delete(reference.id);
                     result = true;
                 } catch (error) {
+                    console.error(error);
                     result = false;
                 }
 
