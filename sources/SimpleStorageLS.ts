@@ -18,16 +18,8 @@ import SimpleStorage from './SimpleStorage';
 
 class SimpleStorageLS extends SimpleStorage {
 
-    public readonly storeNameLS: string;
-
-    constructor(
-        database: string,
-        store: string,
-        key: string = 'id',
-    ) {
-        super(database, store, key);
-        this.storeNameLS = `${ this.database }_${ this.store }_v${ this.version }`;
-    }
+    private storeNameLSCache: string;
+    private storeNameLSCacheVersion: number;
 
     /**
      * Запись
@@ -125,6 +117,20 @@ class SimpleStorageLS extends SimpleStorage {
             localStorage.setItem(this.storeNameLS, '[]');
             resolve();
         });
+    }
+
+    /**
+     * Название ключа хранилища в LocalStorage
+     * @readonly
+     * @private
+     * @type {string}
+     */
+    private get storeNameLS(): string {
+        if (this.version !== this.storeNameLSCacheVersion) {
+            this.storeNameLSCache = `${ this.database }_${ this.store }_v${ this.version }`;
+        }
+
+        return this.storeNameLSCache;
     }
 
     /**

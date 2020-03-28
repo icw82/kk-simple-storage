@@ -42,15 +42,28 @@ runs.forEach((SimpleStorage: any) => {
     const cache = new SimpleStorage(database, store, key);
     const count = 5;
 
-    // TODO: Проверка обновления базы
-
     describe(name, () => {
 
-        it('Should change version', () => {
-            const value = 1;
-            cache.version = value;
+        describe('DB version and invalidation', () => {
 
-            chai.expect(cache.version).to.equal(value);
+            it('Should change version', () => {
+                const value = 1;
+                cache.version = value;
+
+                chai.expect(cache.version).to.equal(value);
+            });
+
+            it('Should clear DB on change version', async () => {
+                const reference = getRandObject();
+                cache.set(reference);
+
+                const value = 2;
+                cache.version = value;
+
+                const result: any = await cache.get(reference.id);
+                chai.expect(result).to.be.undefined;
+            });
+
         });
 
         describe('Clear', () => {

@@ -3,7 +3,7 @@ import ts from 'gulp-typescript';
 
 
 const tsProject = ts.createProject({
-    target: 'es5',
+    target: 'es2019',
     module: 'amd',
     lib: [
         'es2015',
