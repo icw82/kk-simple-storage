@@ -18,8 +18,8 @@ import SimpleStorage from './SimpleStorage';
 
 class SimpleStorageLS extends SimpleStorage {
 
-    private storeNameLSCache: string;
-    private storeNameLSCacheVersion: number;
+    private storeNameLSCache: string = '';
+    private storeNameLSCacheVersion: number = 0;
 
     /**
      * Запись
@@ -127,7 +127,9 @@ class SimpleStorageLS extends SimpleStorage {
      */
     private get storeNameLS(): string {
         if (this.version !== this.storeNameLSCacheVersion) {
-            this.storeNameLSCache = `${ this.database }_${ this.store }_v${ this.version }`;
+            this.storeNameLSCacheVersion = this.version;
+            this.storeNameLSCache =
+                `${ this.database }_${ this.store }_v${ this.storeNameLSCacheVersion }`;
         }
 
         return this.storeNameLSCache;
